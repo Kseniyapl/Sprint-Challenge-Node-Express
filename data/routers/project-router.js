@@ -78,4 +78,23 @@ router.put('/:id', async (req, res) => {
 });
 
 
+//GET by ID
+router.get('/:id', async (req, res) => {
+  try {
+
+    const project = await projectDB.get(req.params.id);
+
+    if (project) {
+      res.status(200).json(project);
+  } else {
+      res.status(404).json({ message: "The project with the specified ID does not exist." });
+  }
+} catch (error) {
+  // log error to database
+  console.log(error);
+  res.status(500).json({ error: "The project could not be retrieved." });
+} 
+});
+
+
 module.exports = router;
