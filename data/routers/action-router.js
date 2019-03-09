@@ -4,6 +4,9 @@ const actionDB = require('../helpers/actionModel.js');
 
 const router = express.Router();
 
+
+const descriptionLengthMiddleware = require("../middleware/descriptionLength");
+
 router.get('/', async (req, res) => {
   try {
       const action = await actionDB.get();
@@ -17,7 +20,7 @@ router.get('/', async (req, res) => {
 
 //POST
 
-router.post('/', async (req, res) => {
+router.post('/', descriptionLengthMiddleware, async (req, res) => {
 
   if (!req.body) {
      res.status(400).json({ errorMessage: "Please provide an action." });
@@ -35,7 +38,7 @@ router.post('/', async (req, res) => {
 
 //PUT (Update)
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', descriptionLengthMiddleware, async (req, res) => {
 
   
   try {
