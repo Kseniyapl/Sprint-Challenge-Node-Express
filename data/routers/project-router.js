@@ -31,13 +31,51 @@ router.post('/', async (req, res) => {
          const project = await projectDB.insert(req.body);
          res.status(201).json(project);
      } catch (err) {
-      res.status(500).json({error: "There was an error while saving the post to the database."});
+      res.status(500).json({error: "There was an error while saving the project."});
     }
  }
 
 
 });
 
+//PUT (Update)
+
+router.put('/:id', async (req, res) => {
+
+  
+     try {
+         const project = await projectDB.update(req.params.id, req.body);
+
+          if (project) {
+             res.status(200).json(project);
+         } else {
+             res.status(404).json({ message: "The project with the specified ID does not exist." });
+         }
+     } catch (error) {
+         // log error to database
+         console.log(error);
+         res.status(500).json({ error: "The project information could not be modified." });
+     };
+    });
+
+
+ //DELETE
+
+ router.delete('/:id', async (req, res) => {
+  try {
+      const project = await projectDB.remove(req.params.id);
+
+       if (project > 0) {
+          res.status(200).json({ message: "The project has been removed" });
+      } else {
+          res.status(404).json({ message: "The project with the specified ID does not exist." });
+      }
+  } catch (error) {
+      // log error to database
+      console.log(error);
+      res.status(500).json({ error: "The project could not be removed" });
+  }
+});
 
 
 module.exports = router;
