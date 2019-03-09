@@ -20,7 +20,24 @@ router.get('/', async (req, res) => {
 });
 
 
-//
+//POST
+
+router.post('/', async (req, res) => {
+
+  if (!req.body.name) {
+     res.status(400).json({ errorMessage: "Please provide a project" });
+ } else {    
+     try {
+         const project = await projectDB.insert(req.body);
+         res.status(201).json(project);
+     } catch (err) {
+      res.status(500).json({error: "There was an error while saving the post to the database."});
+    }
+ }
+
+
+});
+
 
 
 module.exports = router;
